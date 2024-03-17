@@ -6,7 +6,4 @@ public class DayException extends Exception {
     @SuppressWarnings("unused")
     public DayException() {}
     public DayException(String message, Throwable cause) { super(message, cause); }
-    public DayException(Throwable cause) {
-        super(cause);
-    }
 }
