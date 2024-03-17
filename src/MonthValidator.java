@@ -1,8 +1,5 @@
 package src;
-
-import exception.DayException;
 import exception.MonthException;
-
 import java.util.function.Supplier;
 import java.util.Scanner;
 public class MonthValidator {
@@ -14,7 +11,32 @@ public class MonthValidator {
     public void checkMonth() throws MonthException {
         int month = monthSupplier.get();
         if (month > 12 || month < 1) {
-            throw new MonthException("", 0);
+            throw new MonthException();
+        } else {
+            System.out.println(monthToStringConverter(month));
         }
+    }
+
+    /**
+     * @param month -> int value that gets turned into a String value
+     * @return -> {@link #monthToStringConverter(int month)} -> {@link #checkMonth()}
+     */
+
+    public String monthToStringConverter(int month) {
+        return switch (month){
+          case 1 -> "January";
+          case 2 -> "February";
+          case 3 -> "March";
+          case 4 -> "April";
+          case 5 -> "May";
+          case 6 -> "June";
+          case 7 -> "July";
+          case 8 -> "August";
+          case 9 -> "September";
+          case 10 -> "October";
+          case 11 -> "November";
+          case 12 -> "December";
+            default ->  " ";
+        };
     }
 }

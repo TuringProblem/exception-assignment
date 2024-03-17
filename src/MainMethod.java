@@ -1,6 +1,4 @@
 package src;
-import exception.DayException;
-import exception.MonthException;
 
 
 public class MainMethod {
