@@ -8,12 +8,30 @@ public class MonthValidator {
         System.out.println("MONTHS [1 = January] [2 = February] , etc... \nEnter a month [1-12]: ");
         return KEYBOARD.nextInt();
     };
+    public Supplier<Integer> yearSupplier = () -> {
+        System.out.println("Please enter the year: ");
+        return KEYBOARD.nextInt();
+    };
+
     public void checkMonth() throws MonthException {
         int month = monthSupplier.get();
         if (month > 12 || month < 1) {
             throw new MonthException();
         } else {
             System.out.println(monthToStringConverter(month));
+            if (monthToStringConverter(month).equalsIgnoreCase("february")) {
+                if (isLeapYear(yearSupplier.get())) {
+
+                }
+            }
+        }
+    }
+
+    public boolean isLeapYear(int year) {
+        if (year % 4 == 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
