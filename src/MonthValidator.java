@@ -1,90 +1,90 @@
 package src;
 import exception.MonthException;
-
+import java.time.Month;
+import java.time.MonthDay;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.Scanner;
+
 public class MonthValidator {
     Scanner KEYBOARD = new Scanner(System.in);
 
-    public enum Month {
-        JANUARY("January"),
-        FEBRUARY("February"),
-        MARCH("March"),
-        APRIL("April"),
-        MAY("May"),
-        JUNE("June"),
-        JULY("July"),
-        AUGUST("August"),
-        SEPTEMBER("September"),
-        OCTOBER("October"),
-        NOVEMBER("November"),
-        DECEMBER("December");
+    /**
+     * @see Month -> using enum for month validation, due to the months being Constant values.
+     */
 
-        final String month;
-        Month(String month) {this.month = month;}
-    }
+    /**
+     * Using {@link #monthSupplier} -> to get the return value from the user
+     */
 
     public Supplier<Integer> monthSupplier = () -> {
         System.out.println("MONTHS [1 = January] [2 = February] , etc... \nEnter a month [1-12]: ");
         return KEYBOARD.nextInt();
     };
-    public Predicate<Integer> leapYearPredicate = i -> i % 4 == 0;
-    public Predicate<Integer> isValidMonth = i -> i > 12 || i < 1;
 
+    /**
+     * Using Predicate<t> {@link #leapYearPredicate} && {@link #isValidMonth} -> to validate if the months are within the expected range:
+     * && if the user picks "February" they will be prompted ot input the year.
+     */
+
+    public final Predicate<Integer> leapYearPredicate = i -> i % 4 == 0;
+    public final Predicate<Integer> isValidMonth = i -> i > 12 || i < 1;
+
+    /**
+     * {@link #monthSupplier} -> .get() the input from the user: Stores value in month
+     * @see Month -> <a href="https://docs.oracle.com/javase/8/docs/api/java/time/Month.html">Java Month API</a>
+     */
+    public int month = monthSupplier.get();
+    public Month myMonth = Month.of(month);
+
+
+    /**
+     * Method {@link #checkMonth()} -> Validates that the user has input the correct month:
+     * @throws MonthException -> if the user's input is invalid.
+     */
     public void checkMonth() throws MonthException {
-        int month = monthSupplier.get();
+
         try {
             if (isValidMonth.test(month)) {
                 throw new MonthException("You cannot use that value!\n");
-
-            } else {
-                System.out.println(monthToStringConverter(month));
-                if (monthToStringConverter(month) == Month.FEBRUARY) {
-                    if (leapYearPredicate.test(yearSupplier.get())) {
-                        //add logic for if it is a leap year
-                    }
-                }
+            }
+            if (myMonth == Month.FEBRUARY) {
+                februaryHandler();
             }
         } catch (MonthException e) {
             System.out.println(e.getMessage());
             System.out.println("This is your last chance!\n");
             lastMonthChance();
         }
-
     }
 
-    public void lastMonthChance() {
-        int month = monthSupplier.get();
-        if (isValidMonth.test(month)){
-
-        } else if (!isValidMonth.test(month)) {
-            System.out.println("you have still been unable to give a valid month\n Good bye! :)");
-            System.exit(0);
+    public void februaryHandler() {
+        if (leapYearPredicate.test(yearSupplier.get())) {
+            int dayLeapYear = Month.FEBRUARY.firstDayOfYear(true);
+            System.out.println("Enter day for leap year\n EX: [1-29]: ");
+            MonthDay monthDay = MonthDay.of(2, KEYBOARD.nextInt());
+            System.out.println(monthDay);
+        } else {
+            System.out.println("Enter day for February\n EX: [1-28]: ");
+            MonthDay notLeapYear = MonthDay.of(2, KEYBOARD.nextInt());
+            System.out.println(notLeapYear);
         }
     }
 
     /**
-     * @param month -> int value that gets turned into a String value
-     * @return -> {@link #monthToStringConverter(int month)} -> {@link #checkMonth()}
+     * {@link #lastMonthChance()} -> gives the user one last chance:
+     * Verifies that the user has input the correct information
      */
 
-    public Month monthToStringConverter(int month) {
-        return switch (month){
-          case 1 -> Month.JANUARY;
-          case 2 -> Month.FEBRUARY;
-          case 3 -> Month.MARCH;
-          case 4 -> Month.APRIL;
-          case 5 -> Month.MAY;
-          case 6 -> Month.JUNE;
-          case 7 -> Month.JULY;
-          case 8 -> Month.AUGUST;
-          case 9 -> Month.SEPTEMBER;
-          case 10 -> Month.OCTOBER;
-          case 11 -> Month.NOVEMBER;
-          case 12 -> Month.DECEMBER;
-            default ->  null;
-        };
+    public void lastMonthChance() {
+        if (!isValidMonth.test(month)) {
+            if (myMonth == Month.FEBRUARY) {
+                februaryHandler();
+            }
+        } else {
+            System.out.println("you have still been unable to give a valid month\n Good bye! :)");
+            System.exit(0);
+        }
     }
 
     public Supplier<Integer> yearSupplier = () -> {
