@@ -3,6 +3,7 @@ import exception.DayException;
 import java.time.MonthDay;
 import java.util.Scanner;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * @auther -> Override
@@ -21,18 +22,22 @@ public class FebruaryHandler {
     public String dayPromptNonLeap = "Enter day for February\n EX: [1-28]: ";
     public String dayExceptionPrompt = "Invalid Day for February!\nPlease remember to use the correct value for day!\n";
     Scanner KEYBOARD  = new Scanner(System.in);
+    public Supplier<Integer> yearSupplier = () -> {
+        System.out.println("Please enter the year: ");
+        return KEYBOARD.nextInt();
+    };
+
 
     /**
      * @throws DayException -> Checks to make sure that the user has input the correct value.
      */
 
     public void februaryHandler() throws DayException {
-        if (month.leapYearPredicate.test(month.yearSupplier.get())) {
+        if (!month.leapYearPredicate.test(yearSupplier.get())) {
             try {
                 System.out.println("Enter day for leap year\n EX: [1-29]: ");
                 leapDay = KEYBOARD.nextInt();
                 if (leapDay < 1 || leapDay > 29) {
-                    boolChecker.test(0);
                     throw new DayException(dayExceptionPrompt);
                 } else {
                     System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
@@ -46,7 +51,6 @@ public class FebruaryHandler {
                 System.out.println(dayPromptNonLeap);
                 leapDay = KEYBOARD.nextInt();
                 if (leapDay < 1 || leapDay > 28) {
-                    boolChecker.test(1);
                  throw new DayException( );
 
                 }
@@ -62,28 +66,27 @@ public class FebruaryHandler {
      * @link {@link #boolChecker} -> Predicate to check
      */
 
-    Predicate<Integer> boolChecker = i -> i == 0;
-
     /**
      * @link {@link #finalDay()} -> is final output that the user can input the right value
      */
 
     public void finalDay() {
-        if (boolChecker.test(0)) {
+        System.out.println("I will ask again for the year, make sure you input the correct values that are prompted!\n");
+        if (!month.leapYearPredicate.test(yearSupplier.get())) {
             do {
                 System.out.println(dayPromptLeap);
                 leapDay = KEYBOARD.nextInt();
             } while (leapDay < 1 || leapDay > 29);
-        } else if (boolChecker.test(1))  {
+            System.out.printf("%s %d%s", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
+        } else {
             do {
                 System.out.println(dayPromptNonLeap);
                 leapDay = KEYBOARD.nextInt();
-            } while(leapDay < 1 || leapDay > 28);
-        } else {
-            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(month.monthValidation()), leapDay, dateCases(leapDay));
+            } while (leapDay < 1 || leapDay > 28);
+            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
         }
-
     }
+
 
     /**
      * @param userInput -> takes the input from the user
