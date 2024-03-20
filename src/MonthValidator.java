@@ -50,10 +50,10 @@ public class MonthValidator {
     public static FebruaryHandler feb = new FebruaryHandler();
     public void checkMonth() throws MonthException, DayException {
         try {
-            if (isValidMonth.equals(monthValidation())) {
+            if (isValidMonth.test(monthValidation())) {
                 throw new MonthException("You cannot use that value!\n");
             }
-            if (monthValidation().equals("February")) {
+            if (monthValidation() == MONTH_TO_STRING.containsKey(2)) {
                 feb.februaryHandler();
             }
         } catch (MonthException e) {
@@ -63,9 +63,8 @@ public class MonthValidator {
         }
     }
 
-    public String monthValidation() {
-        int month = monthSupplier.get();
-        return MONTH_TO_STRING.get(month);
+    public int monthValidation() {
+        return MONTH_TO_STRING.containsValue(monthSupplier.get());
     }
 
     /**
@@ -76,7 +75,7 @@ public class MonthValidator {
     public void lastMonthChance() throws DayException {
 
         if (!isValidMonth.equals(monthValidation())) {
-            if (monthValidation().equals("February")) {
+            if (monthValidation() == MONTH_TO_STRING.containsKey(2)) {
                 feb.februaryHandler();
             }
         } else {

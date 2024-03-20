@@ -23,7 +23,7 @@ public class FebruaryHandler {
     Scanner KEYBOARD  = new Scanner(System.in);
 
     /**
-     * @throws DayException ->
+     * @throws DayException -> Checks to make sure that the user has input the correct value.
      */
 
     public void februaryHandler() throws DayException {
@@ -32,13 +32,13 @@ public class FebruaryHandler {
                 System.out.println("Enter day for leap year\n EX: [1-29]: ");
                 leapDay = KEYBOARD.nextInt();
                 if (leapDay < 1 || leapDay > 29) {
+                    boolChecker.test(0);
                     throw new DayException(dayExceptionPrompt);
                 } else {
                     System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
                 }
             } catch (DayException e) {
                 System.out.println(e.getMessage());
-                boolChecker.test(0);
                 finalDay();
             }
         } else {
@@ -46,15 +46,15 @@ public class FebruaryHandler {
                 System.out.println(dayPromptNonLeap);
                 leapDay = KEYBOARD.nextInt();
                 if (leapDay < 1 || leapDay > 28) {
-                    throw new DayException(dayExceptionPrompt);
+                    boolChecker.test(1);
+                 throw new DayException( );
+
                 }
             } catch(DayException exception) {
-                boolChecker.test(1);
                 finalDay();
             }
             System.out.println(dayPromptNonLeap);
-            MonthDay notLeapYear = MonthDay.of(2, leapDay);
-            System.out.println(notLeapYear);
+            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
         }
     }
 
