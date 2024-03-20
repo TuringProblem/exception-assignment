@@ -9,9 +9,11 @@ public class DayValidator extends MonthValidator {
         System.out.printf("Please enter the day that you would like for the month of %d\n Please enter a day: ", Month.FEBRUARY);
         return KEYBOARD.nextInt();
     };
-    public void checkMonth(Month monthpassed) {
+
+    //yea I'm doing my Java homework rightnow
+    /*public void checkMonth(Month monthpassed) {
         if (monthpassed == Month.FEBRUARY) {
 
         }
-    }
+    }*/
 }

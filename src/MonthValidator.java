@@ -2,10 +2,25 @@ package src;
 import exception.DayException;
 import exception.MonthException;
 import java.time.Month;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.Scanner;
 public class MonthValidator {
+
+    Map<Integer, String> MONTH_TO_STRING = Map.ofEntries(
+            Map.entry(1, "January"),
+            Map.entry(2, "February"),
+            Map.entry(3, "March"),
+            Map.entry(4, "April"),
+            Map.entry(5, "May"),
+            Map.entry(6, "June"),
+            Map.entry(7, "July"),
+            Map.entry(8, "August"),
+            Map.entry(9, "September"),
+            Map.entry(10, "October"),
+            Map.entry(11, "November"),
+            Map.entry(12, "December"));
     Scanner KEYBOARD = new Scanner(System.in);
     /** * @see Month -> using enum for month validation, due to the months being Constant values. * Using {@link #monthSupplier} -> to get the return value from the user */
     public Supplier<Integer> monthSupplier = () -> {
