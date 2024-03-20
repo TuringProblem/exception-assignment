@@ -8,6 +8,9 @@ import java.util.function.Supplier;
 import java.util.Scanner;
 public class MonthValidator {
 
+    /**
+     * @see Map -> using map to collection
+     */
     Map<Integer, String> MONTH_TO_STRING = Map.ofEntries(
             Map.entry(1, "January"),
             Map.entry(2, "February"),
@@ -22,7 +25,12 @@ public class MonthValidator {
             Map.entry(11, "November"),
             Map.entry(12, "December"));
     Scanner KEYBOARD = new Scanner(System.in);
-    /** * @see Month -> using enum for month validation, due to the months being Constant values. * Using {@link #monthSupplier} -> to get the return value from the user */
+
+    /**
+     * {@link #monthSupplier} -> .get() the input from the user: Stores value in month
+     * @see Month -> <a href="https://docs.oracle.com/javase/8/docs/api/java/time/Month.html">Java Month API</a>
+     */
+
     public Supplier<Integer> monthSupplier = () -> {
         System.out.println("MONTHS [1 = January] [2 = February] , etc... \nEnter a month [1-12]: ");
         return KEYBOARD.nextInt(); };
@@ -35,14 +43,10 @@ public class MonthValidator {
     public final Predicate<Integer> isValidMonth = i -> i > 12 || i < 1;
 
     /**
-     * {@link #monthSupplier} -> .get() the input from the user: Stores value in month
-     * @see Month -> <a href="https://docs.oracle.com/javase/8/docs/api/java/time/Month.html">Java Month API</a>
-     */
-
-    /**
      * Method {@link #checkMonth()} -> Validates that the user has input the correct month:
      * @throws MonthException -> if the user's input is invalid.
      */
+
     public static FebruaryHandler feb = new FebruaryHandler();
     public void checkMonth() throws MonthException, DayException {
         try {
@@ -64,8 +68,6 @@ public class MonthValidator {
         return MONTH_TO_STRING.get(month);
     }
 
-
-
     /**
      * {@link #lastMonthChance()} -> gives the user one last chance:
      * Verifies that the user has input the correct information
@@ -82,7 +84,6 @@ public class MonthValidator {
             System.exit(0);
         }
     }
-
     public Supplier<Integer> yearSupplier = () -> {
         System.out.println("Please enter the year: ");
         return KEYBOARD.nextInt();

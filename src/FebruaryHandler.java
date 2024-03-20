@@ -22,6 +22,10 @@ public class FebruaryHandler {
     public String dayExceptionPrompt = "Invalid Day for February!\nPlease remember to use the correct value for day!\n";
     Scanner KEYBOARD  = new Scanner(System.in);
 
+    /**
+     * @throws DayException ->
+     */
+
     public void februaryHandler() throws DayException {
         if (month.leapYearPredicate.test(month.yearSupplier.get())) {
             try {
@@ -53,32 +57,44 @@ public class FebruaryHandler {
             System.out.println(notLeapYear);
         }
     }
+
+    /**
+     * @link {@link #boolChecker} -> Predicate to check
+     */
+
     Predicate<Integer> boolChecker = i -> i == 0;
+
+    /**
+     * @link {@link #finalDay()} -> is final output that the user can input the right value
+     */
+
     public void finalDay() {
         if (boolChecker.test(0)) {
             do {
                 System.out.println(dayPromptLeap);
                 leapDay = KEYBOARD.nextInt();
             } while (leapDay < 1 || leapDay > 29);
-            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
         } else if (boolChecker.test(1))  {
             do {
                 System.out.println(dayPromptNonLeap);
                 leapDay = KEYBOARD.nextInt();
             } while(leapDay < 1 || leapDay > 28);
         } else {
-            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
+            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(month.monthValidation()), leapDay, dateCases(leapDay));
         }
 
     }
 
-//this is a nice use of the switch Expressions
+    /**
+     * @param userInput -> takes the input from the user
+     * @return -> The corresponding value for the integer {@link #dateCases(int userInput)}
+     */
     public String dateCases(int userInput) {
         return switch(userInput) {
-            case 1, 21 -> "st";
+            case 1, 21, 31 -> "st";
             case 2, 22 -> "nd";
             case 3, 23 -> "rd";
-            case 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24, 25, 26, 27, 28, 29 -> "th";
+            case 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24, 25, 26, 27, 28, 29, 30 -> "th";
             default -> "";
         };
     }
