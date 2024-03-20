@@ -30,8 +30,7 @@ public class FebruaryHandler {
                 if (leapDay < 1 || leapDay > 29) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
-                    MonthDay leapYearDay = MonthDay.of(2, leapDay);
-                    System.out.println(leapYearDay);
+                    System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
                 }
             } catch (DayException e) {
                 System.out.println(e.getMessage());
@@ -61,17 +60,27 @@ public class FebruaryHandler {
                 System.out.println(dayPromptLeap);
                 leapDay = KEYBOARD.nextInt();
             } while (leapDay < 1 || leapDay > 29);
-            MonthDay monthDay = MonthDay.of(2, leapDay);
-            System.out.println(monthDay);
+            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
         } else if (boolChecker.test(1))  {
             do {
                 System.out.println(dayPromptNonLeap);
                 leapDay = KEYBOARD.nextInt();
             } while(leapDay < 1 || leapDay > 28);
         } else {
-
+            System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), leapDay, dateCases(leapDay));
         }
 
+    }
+
+//this is a nice use of the switch Expressions
+    public String dateCases(int userInput) {
+        return switch(userInput) {
+            case 1, 21 -> "st";
+            case 2, 22 -> "nd";
+            case 3, 23 -> "rd";
+            case 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24, 25, 26, 27, 28, 29 -> "th";
+            default -> "";
+        };
     }
 
 }
