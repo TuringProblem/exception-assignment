@@ -21,8 +21,16 @@ public class FebruaryHandler {
     public String dayExceptionPrompt = "Invalid Day for February!\nPlease remember to use the correct value for day!\n";
     Scanner KEYBOARD  = new Scanner(System.in);
 
+    public boolean isValid(MonthValidator.MyMonths month, int day, int year) {
+        int total = switch(month) {
+            case FEB -> this.month.leapYearPredicate.test(year) ? 29 : month.getDays();
+            default -> month.getDays();
+        };
+        return day <= total;
+    }
+
     public void expectedOutput() {
-        System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), myDay, dateCases(myDay));
+        System.out.printf("%s %d%s\n", MonthValidator.MyMonths.FEB.getName(), myDay, dateCases(myDay));
     }
 
     public Supplier<Integer> yearSupplier = () -> {
@@ -38,7 +46,7 @@ public class FebruaryHandler {
                 if (myDay < 1 || myDay > 29) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
-                    System.out.printf("%s %d%s\n", month.MONTH_TO_STRING.get(2), myDay, dateCases(myDay));
+                    expectedOutput();
                 }
             } catch (DayException e) {
                 System.out.println(e.getMessage());
