@@ -1,8 +1,6 @@
 package src.months;
 import exception.DayException;
 import exception.MonthException;
-
-import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -33,21 +31,15 @@ public class MonthValidator {
         OCT("October", 31),
         NOV("November", 30),
         DEC("December", 31);
+
         private final String name;
         private final int days;
-
         MyMonths(String name, int days) {
             this.name = name;
             this.days = days;
         }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getDays() {
-            return days;
-        }
+        public String getName() { return name; }
+        public int getDays() { return days; }
     }
 
     public String caseHandler(int value) {
@@ -90,7 +82,7 @@ public class MonthValidator {
 
     public final Predicate<Integer> leapYearPredicate = i -> i % 4 == 0 && (i % 100 != 0 || i % 400 == 0);
 
-    public void checkMonth() throws DayException {
+    public void checkMonth() throws MonthException,  DayException {
         userInput = monthSupplier.get();
         try {
             if (userInput.isEmpty()) {
@@ -99,8 +91,9 @@ public class MonthValidator {
             if (userInput.equals("February")) {
                 FEB.februaryHandler();
             } else {
-                MONTH.remainingMonths();
+                remainingMonths();
             }
+
         } catch (MonthException e) {
             System.out.println(e.getMessage());
             System.out.println("This is your last chance!\n");
@@ -108,7 +101,7 @@ public class MonthValidator {
         }
     }
 
-    public void lastMonthChance() throws DayException {
+    public void lastMonthChance() throws MonthException, DayException {
         userInput = monthSupplier.get();
         if (userInput.isEmpty()) {
             System.out.println("you have still been unable to give a valid month\n Good bye! :)");
@@ -116,9 +109,14 @@ public class MonthValidator {
         }
         if (userInput.equals("February")) {
             FEB.februaryHandler();
-        } else {
-            MONTH.remainingMonths();
 
+        } else if (userInput.equals("January")){
+            System.out.println("yo");
+        }
+    }
+    public void remainingMonths()throws DayException {
+        if (userInput.equals("January")) {
+            MONTH.sendJanuary();
         }
     }
 }
