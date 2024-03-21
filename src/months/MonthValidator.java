@@ -1,17 +1,24 @@
-package src;
+package src.months;
 import exception.DayException;
 import exception.MonthException;
-import java.time.Month;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.Scanner;
+/**
+ * @author Override
+ * @since 3/20/2024 @19:32
+ * @see <a href="https://github.com/TuringProblem">GitHub Profile</a>
+ */
 public class MonthValidator {
 
     private String userInput;
+
+
     /**
-     * @see Map -> using map to collection
+     * @see Map -> using Map to associate months key value's with its corresponding String
      */
+
     Map<Integer, String> MONTH_TO_STRING = Map.ofEntries(
             Map.entry(1, "January"),
             Map.entry(2, "February"),
@@ -25,19 +32,14 @@ public class MonthValidator {
             Map.entry(10, "October"),
             Map.entry(11, "November"),
             Map.entry(12, "December"));
-    Scanner KEYBOARD = new Scanner(System.in);
 
-    /**
-     * {@link #monthSupplier} -> .get() the input from the user: Stores value in month
-     * @see Month -> <a href="https://docs.oracle.com/javase/8/docs/api/java/time/Month.html">Java Month API</a>
-     */
     public String caseHandler(int value) {
         return switch (value) {
             case 1 -> MONTH_TO_STRING.get(1);
-            case 2 ->MONTH_TO_STRING.get(2);
+            case 2 -> MONTH_TO_STRING.get(2);
             case 3 -> MONTH_TO_STRING.get(3);
-            case 4 ->  MONTH_TO_STRING.get(4);
-            case 5 ->  MONTH_TO_STRING.get(5);
+            case 4 -> MONTH_TO_STRING.get(4);
+            case 5 -> MONTH_TO_STRING.get(5);
             case 6 -> MONTH_TO_STRING.get(6);
             case 7 -> MONTH_TO_STRING.get(7);
             case 8 -> MONTH_TO_STRING.get(8);
@@ -48,29 +50,39 @@ public class MonthValidator {
             default -> "";
         };
     }
+
     public Supplier<String> monthSupplier = () -> {
+        Scanner KEYBOARD = new Scanner(System.in);
         System.out.println("MONTHS [1 = January] [2 = February] , etc... \nEnter a month [1-12]: ");
         int value = KEYBOARD.nextInt();
-        return caseHandler(value); };
-
-    public static FebruaryHandler feb = new FebruaryHandler();
-    public final Predicate<Integer> leapYearPredicate = i -> i % 4 == 0 && i % 400 == 0;
+        return caseHandler(value);
+    };
 
     /**
-     * Method {@link #checkMonth()} -> Validates that the user has input the correct month:
-     * @throws MonthException -> if the user's input is invalid.
+     * @see FebruaryHandler -> Handles the month of February
      */
 
+    public static FebruaryHandler FEB = new FebruaryHandler();
+    public static MonthHandler MONTH = new MonthHandler();
 
 
-    public void checkMonth() throws MonthException, DayException {
+    /**
+     * @see Predicate -> Checks if the year passed by the user is a Leap year
+     */
+
+    public final Predicate<Integer> leapYearPredicate = i -> i % 4 == 0 && i % 400 == 0;
+
+
+    public void checkMonth() throws  DayException {
         userInput = monthSupplier.get();
         try {
-            if(userInput.isEmpty()) {
+            if (userInput.isEmpty()) {
                 throw new MonthException("You cannot use that value!\n");
             }
             if (userInput.equals("February")) {
-                feb.februaryHandler();
+                FEB.februaryHandler();
+            } else {
+
             }
         } catch (MonthException e) {
             System.out.println(e.getMessage());
@@ -80,19 +92,13 @@ public class MonthValidator {
     }
 
 
-    /**
-     * {@link #lastMonthChance()} -> gives the user one last chance:
-     * Verifies that the user has input the correct information
-     */
-
     public void lastMonthChance() throws DayException {
         userInput = monthSupplier.get();
         if (userInput.equals("February")) {
-                feb.februaryHandler();
+            FEB.februaryHandler();
         } else {
             System.out.println("you have still been unable to give a valid month\n Good bye! :)");
             System.exit(0);
         }
     }
-
 }
