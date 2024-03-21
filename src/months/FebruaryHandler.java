@@ -16,18 +16,9 @@ public class FebruaryHandler {
      * Leap day, is private value used
      */
     private int myDay;
-    public String dayPromptLeap = "Incorrect value\n Please enter a day [1-29]: ";
-    public String dayPromptNonLeap = "Enter day for February\n EX: [1-28]: ";
-    public String dayExceptionPrompt = "Invalid Day for February!\nPlease remember to use the correct value for day!\n";
-    Scanner KEYBOARD  = new Scanner(System.in);
-
-    public boolean isValid(MonthValidator.MyMonths month, int day, int year) {
-        int total = switch(month) {
-            case FEB -> this.month.leapYearPredicate.test(year) ? 29 : month.getDays();
-            default -> month.getDays();
-        };
-        return day <= total;
-    }
+    public  final String dayPromptNonLeap = "Enter day for February\n EX: [1-28]: ";
+    public String dayExceptionPrompt = "Invalid Day for February!\n";
+    public Scanner KEYBOARD  = new Scanner(System.in);
 
     public void expectedOutput() {
         System.out.printf("%s %d%s\n", MonthValidator.MyMonths.FEB.getName(), myDay, dateCases(myDay));
@@ -38,8 +29,12 @@ public class FebruaryHandler {
         return KEYBOARD.nextInt();
     };
 
+    /**
+     *
+     */
+
     public void februaryHandler()  {
-        if (!month.leapYearPredicate.test(yearSupplier.get())) {
+        if (month.leapYearPredicate.test(yearSupplier.get())) {
             try {
                 System.out.println("Enter day for leap year\n EX: [1-29]: ");
                 myDay = KEYBOARD.nextInt();
@@ -68,22 +63,22 @@ public class FebruaryHandler {
     }
 
     public void finalDay() {
-        System.out.println("I will ask again for the year, make sure you input the correct values that are prompted!\n");
-        if (!month.leapYearPredicate.test(yearSupplier.get())) {
-            do {
-                System.out.println(dayPromptLeap);
-                myDay =  KEYBOARD.nextInt();
-            } while (myDay < 1 || myDay > 29);
-            expectedOutput();
-        } else {
-            do {
-                System.out.println(dayPromptNonLeap);
-                 myDay = KEYBOARD.nextInt();
-            } while (myDay < 1 || myDay > 28);
-            expectedOutput();
+        System.out.println("Enter the correct value!\nLast chance: ");
+        myDay = KEYBOARD.nextInt();
+            if (myDay < 1 || myDay > 29) {
+                seeYa();
+            }
+            if (myDay < 1 || myDay > 28) {
+                seeYa();
+            } else {
+                expectedOutput();
+            }
         }
-    }
 
+    public void seeYa() {
+        System.out.println("I've tried to warn you...\ngood bye :)");
+        System.exit(0);
+    }
     /**
      * @param userInput -> takes the input from the user
      * @return -> The corresponding value for the integer
@@ -98,5 +93,4 @@ public class FebruaryHandler {
             default -> "";
         };
     }
-
 }

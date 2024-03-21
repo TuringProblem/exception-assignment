@@ -48,13 +48,6 @@ public class MonthValidator {
         public int getDays() {
             return days;
         }
-
-        public static MyMonths getMonthByNumber(int num) throws MonthException {
-            if (num <= 0 || num > MyMonths.values().length) {
-                throw new MonthException("Invalid month!");
-            }
-            return MyMonths.values()[num - 1];
-        }
     }
 
     public String caseHandler(int value) {
