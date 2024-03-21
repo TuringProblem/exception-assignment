@@ -15,7 +15,8 @@ public class MonthHandler {
             case JUN -> MonthValidator.MyMonths.JUN.getDays();
             case JUL -> MonthValidator.MyMonths.JUL.getDays();
             case AUG -> MonthValidator.MyMonths.AUG.getDays();
-            case SEP -> MonthValidator.MyMonths
+            case SEP -> MonthValidator.MyMonths.SEP.getDays();
+            case DEC -> MonthValidator.MyMonths.DEC.getDays();
             default -> 0;
 
         };
