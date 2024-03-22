@@ -58,7 +58,6 @@ public class MonthValidator {
             case 11 -> MyMonths.NOV.getName();
             case 12 -> MyMonths.DEC.getName();
             default -> "";
-
         };
     }
 
@@ -119,7 +118,7 @@ public class MonthValidator {
             MONTH.sendJanuary();
         }
         if (userInput.equals("March")) {
-
+            MONTH.sendMarch();
         }
         if (userInput.equals("April")) {
 

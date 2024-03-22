@@ -15,6 +15,7 @@ public class FebruaryHandler {
     /**
      * Leap day, is private value used
      */
+
     private int myDay;
     public  final String dayPromptNonLeap = "Enter day for February\n EX: [1-28]: ";
     public final String dayPromptLeapYear = "Enter day for leap year\n EX: [1-29]: ";
@@ -26,13 +27,22 @@ public class FebruaryHandler {
     }
 
     public Supplier<Integer> yearSupplier = () -> {
-        System.out.println("Please enter the year: ");
-        myDay = KEYBOARD.nextInt();
-        return myDay;
+        try {
+            System.out.println("Please enter the year: ");
+            myDay = KEYBOARD.nextInt();
+            if (myDay < 0) {
+                throw new Exception("Incorrect year!\n I will now close the program!\n");
+
+            } else {
+                return myDay;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     };
 
     /**
-     *
+     * This is the last resort for the user to implement the right value
      */
 
     public void februaryHandler()  {
@@ -54,7 +64,7 @@ public class FebruaryHandler {
                 System.out.println(dayPromptNonLeap);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 28) {
-                 throw new DayException( );
+                 throw new DayException("This is an invalid input!\n");
                 }
             } catch(DayException exception) {
                 finalDay();
@@ -65,13 +75,14 @@ public class FebruaryHandler {
     }
 
     public void finalDay() {
-        System.out.println("Enter the correct value!\nLast chance: ");
-        myDay = yearSupplier.get();
+        try {
+            System.out.println("Enter the correct value!\nLast chance: ");
+            myDay = yearSupplier.get();
             if (month.leapYearPredicate.test(myDay)) {
                 System.out.println(dayPromptLeapYear);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 29) {
-                    seeYa();
+                    throw new DayException("Okay! Bye bye Bitch\n");
                 } else {
                     expectedOutput();
                 }
@@ -79,17 +90,22 @@ public class FebruaryHandler {
                 System.out.println(dayPromptNonLeap);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 28) {
-                    seeYa();
+                    throw new DayException("Okay! Bye bye BITCH!\n");
                 } else {
                     expectedOutput();
                 }
             }
+        } catch (DayException e) {
+            seeYa();
+        }
+
         }
 
     public void seeYa() {
         System.out.println("I've tried to warn you...\ngood bye :)");
         System.exit(0);
     }
+
     /**
      * @param userInput -> takes the input from the user
      * @return -> The corresponding value for the integer
