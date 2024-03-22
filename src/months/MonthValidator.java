@@ -1,6 +1,8 @@
 package src.months;
 import exception.DayException;
 import exception.MonthException;
+
+import java.time.chrono.MinguoChronology;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -86,11 +88,8 @@ public class MonthValidator {
         try {
             if (userInput.isEmpty()) {
                 throw new MonthException("You cannot use that value!\n");
-            }
-            if (userInput.equals("February")) {
-                FEB.februaryHandler();
             } else {
-                remainingMonths();
+                remainingMonths(userInput);
             }
 
         } catch (MonthException e) {
@@ -105,27 +104,28 @@ public class MonthValidator {
         if (userInput.isEmpty()) {
             System.out.println("you have still been unable to give a valid month\n Good bye! :)");
             System.exit(0);
-        }
-        if (userInput.equals("February")) {
-            FEB.februaryHandler();
-
         } else {
-            remainingMonths();
+            remainingMonths(userInput);
         }
     }
-    public void remainingMonths()throws DayException {
-        if (userInput.equals("January")) {
-            MONTH.sendJanuary();
-        }
-        if (userInput.equals("March")) {
-            MONTH.sendMarch();
-        }
-        if (userInput.equals("April")) {
 
+    public void remainingMonths(String input) throws DayException {
+        switch (input) {
+            case "January" -> MONTH.sendResultThirtyOne(1);
+            case "February" -> FEB.februaryHandler(2);
+            case "March" -> MONTH.sendResultThirtyOne(3);
+            case "April" -> MONTH.sendResultThirty(4);
+            case "May" -> MONTH.sendResultThirtyOne(5);
+            case "June" -> MONTH.sendResultThirtyOne(6);
+            case "July" -> MONTH.sendResultThirtyOne(7);
+            case "August" -> MONTH.sendResultThirtyOne(8);
+            case "September" -> MONTH.sendResultThirtyOne(9);
+            case "October" -> MONTH.sendResultThirtyOne(10);
+            case "November" -> MONTH.sendResultThirty(11);
+            case "December" -> MONTH.sendResultThirtyOne(12);
         }
-        if (userInput.equals("May")){
-
-        }
-
     }
+
+
+
 }

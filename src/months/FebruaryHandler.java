@@ -22,8 +22,8 @@ public class FebruaryHandler {
     public String dayExceptionPrompt = "Invalid Day for February!\n";
     public Scanner KEYBOARD  = new Scanner(System.in);
 
-    public void expectedOutput() {
-        System.out.printf("%s %d%s\n", MonthValidator.MyMonths.FEB.getName(), myDay, dateCases(myDay));
+    public void expectedOutput(int valuePassed) {
+        System.out.printf("%s %d%s\n", month.caseHandler(valuePassed), myDay, dateCases(myDay));
     }
 
     public Supplier<Integer> yearSupplier = () -> {
@@ -45,7 +45,7 @@ public class FebruaryHandler {
      * This is the last resort for the user to implement the right value
      */
 
-    public void februaryHandler()  {
+    public void februaryHandler(int monthValue)  {
         if (month.leapYearPredicate.test(yearSupplier.get())) {
             try {
                 System.out.println(dayPromptLeapYear);
@@ -53,7 +53,7 @@ public class FebruaryHandler {
                 if (myDay < 1 || myDay > 29) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
-                    expectedOutput();
+                    expectedOutput(2);
                 }
             } catch (DayException e) {
                 System.out.println(e.getMessage());
@@ -64,13 +64,14 @@ public class FebruaryHandler {
                 System.out.println(dayPromptNonLeap);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 28) {
-                 throw new DayException("This is an invalid input!\n");
+                 throw new DayException(dayExceptionPrompt);
                 }
             } catch(DayException exception) {
+                System.out.println(exception.getMessage());
                 finalDay();
             }
             System.out.println(dayPromptNonLeap);
-            expectedOutput();
+            expectedOutput(2);
         }
     }
 
@@ -82,20 +83,21 @@ public class FebruaryHandler {
                 System.out.println(dayPromptLeapYear);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 29) {
-                    throw new DayException("Okay! Bye bye Bitch\n");
+                    throw new DayException(dayExceptionPrompt);
                 } else {
-                    expectedOutput();
+                    expectedOutput(2);
                 }
             }  else {
                 System.out.println(dayPromptNonLeap);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 28) {
-                    throw new DayException("Okay! Bye bye BITCH!\n");
+                    throw new DayException(dayExceptionPrompt);
                 } else {
-                    expectedOutput();
+                    expectedOutput(2);
                 }
             }
         } catch (DayException e) {
+            System.out.println(e.getMessage());
             seeYa();
         }
 

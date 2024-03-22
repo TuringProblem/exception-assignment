@@ -4,44 +4,76 @@ import java.util.Scanner;
 import java.util.function.Supplier;
 
 public class MonthHandler {
-    public int userInput;
+    private int userInput;
     Scanner KEYBOARD = new Scanner(System.in);
     FebruaryHandler FEB = new FebruaryHandler();
-    final String dayExceptionOutput = "Invalid output\n!";
+    MonthValidator MONTH = new MonthValidator();
+    final String dayExceptionOutput = "Invalid output!\n";
+
     Supplier<Integer> thirtyOneDays = () -> {
         System.out.println("Please enter a day 1-31: ");
         return KEYBOARD.nextInt();
     };
 
+    Supplier<Integer> thirtyDays = () -> {
+        System.out.println("Please enter a day [1-30]: ");
+        return KEYBOARD.nextInt();
+    };
+
     /**
-     *
      * @throws DayException -> Checks to make sure the user uses the correct inputs.
      */
+    public void setUserInput() {userInput = thirtyOneDays.get();}
+    public void setUserInputThirty() {userInput = thirtyDays.get();}
 
-    public void sendJanuary()throws DayException {
+    public void sendResultThirtyOne(int month)throws DayException {
+        setUserInput();
+        try{
+            if (!thirtyoneDays(userInput)) {
+                printOutput(month);
+            } else {
+                throw new DayException(dayExceptionOutput);
+            }
+        } catch (DayException e ) {
+            System.out.println(e.getMessage());
+            secondChanceThirtyOneDays(month);
+        }
+    }
+
+    public void sendResultThirty(int month)throws DayException {
+        setUserInputThirty();
+        try{
+            if (!thirtyDays(userInput)) {
+                printOutput(month);
+            } else {
+                throw new DayException(dayExceptionOutput);
+            }
+        } catch (DayException e ) {
+            System.out.println(e.getMessage());
+            secondChanceThirtyDays(month);
+        }
+    }
+
+    public void secondChanceThirtyDays(int value) {
         userInput = thirtyOneDays.get();
-        if (!thirtyOneDays(userInput)) {
-            System.out.printf("%s %d%s\n",MonthValidator.MyMonths.JAN.getName(), userInput, FEB.dateCases(userInput) );
+        if (!thirtyDays(userInput)) {
+            printOutput(value);
         } else {
-            System.out.printf("%s %d%s\n",MonthValidator.MyMonths.JAN.getName(), userInput, FEB.dateCases(userInput) );
+            System.out.println("I've tried to warn you...\n goodbye for now!\n");
+            System.exit(0);
         }
     }
-    public void sendMarch() throws DayException {
+
+    public void secondChanceThirtyOneDays(int value) {
         userInput = thirtyOneDays.get();
-        if(!thirtyOneDays(userInput)) {
-            System.out.printf("%s %d%s\n", MonthValidator.MyMonths.MAR.getName(), userInput, FEB.dateCases(userInput));
+        if (!thirtyoneDays(userInput)) {
+            printOutput(value);
         } else {
-            //System.out.printf("");
+            System.out.println("I've tried to warn you...\n goodbye for now!\n");
+            System.exit(0);
         }
     }
-
-    public boolean thirtyOneDays(int userInput)throws DayException {
-        if(userInput < 1 || userInput > MonthValidator.MyMonths.JUL.getDays()) {
-            System.out.println("SHIT");
-            throw new DayException(dayExceptionOutput);
-        } else {
-            return true;
-        }
-    }
-
+    public void printOutput(int monthPassed) { System.out.printf("%s %d%s\n", MONTH.caseHandler(monthPassed), userInput, FEB.dateCases(userInput)); }
+    public boolean thirtyDays(int userInput) { return  userInput < 1 || userInput > 30; }
+    public boolean thirtyoneDays(int userInput) { return userInput < 1 || userInput > 31; }
 }
