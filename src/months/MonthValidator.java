@@ -2,6 +2,7 @@ package src.months;
 import exception.DayException;
 import exception.MonthException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.Scanner;
@@ -75,7 +76,6 @@ public class MonthValidator {
     public static FebruaryHandler FEB = new FebruaryHandler();
     public static MonthHandler MONTH = new MonthHandler();
 
-
     /**
      * @see Predicate -> Checks if the year passed by the user is a Leap year
      */
@@ -110,13 +110,23 @@ public class MonthValidator {
         if (userInput.equals("February")) {
             FEB.februaryHandler();
 
-        } else if (userInput.equals("January")){
-            System.out.println("yo");
+        } else {
+            remainingMonths();
         }
     }
     public void remainingMonths()throws DayException {
         if (userInput.equals("January")) {
             MONTH.sendJanuary();
         }
+        if (userInput.equals("March")) {
+
+        }
+        if (userInput.equals("April")) {
+
+        }
+        if (userInput.equals("May")){
+
+        }
+
     }
 }

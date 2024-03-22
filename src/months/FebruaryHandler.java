@@ -17,6 +17,7 @@ public class FebruaryHandler {
      */
     private int myDay;
     public  final String dayPromptNonLeap = "Enter day for February\n EX: [1-28]: ";
+    public final String dayPromptLeapYear = "Enter day for leap year\n EX: [1-29]: ";
     public String dayExceptionPrompt = "Invalid Day for February!\n";
     public Scanner KEYBOARD  = new Scanner(System.in);
 
@@ -26,7 +27,8 @@ public class FebruaryHandler {
 
     public Supplier<Integer> yearSupplier = () -> {
         System.out.println("Please enter the year: ");
-        return KEYBOARD.nextInt();
+        myDay = KEYBOARD.nextInt();
+        return myDay;
     };
 
     /**
@@ -36,7 +38,7 @@ public class FebruaryHandler {
     public void februaryHandler()  {
         if (month.leapYearPredicate.test(yearSupplier.get())) {
             try {
-                System.out.println("Enter day for leap year\n EX: [1-29]: ");
+                System.out.println(dayPromptLeapYear);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 29) {
                     throw new DayException(dayExceptionPrompt);
@@ -64,14 +66,23 @@ public class FebruaryHandler {
 
     public void finalDay() {
         System.out.println("Enter the correct value!\nLast chance: ");
-        myDay = KEYBOARD.nextInt();
-            if (myDay < 1 || myDay > 29) {
-                seeYa();
-            }
-            if (myDay < 1 || myDay > 28) {
-                seeYa();
-            } else {
-                expectedOutput();
+        myDay = yearSupplier.get();
+            if (month.leapYearPredicate.test(myDay)) {
+                System.out.println(dayPromptLeapYear);
+                myDay = KEYBOARD.nextInt();
+                if (myDay < 1 || myDay > 29) {
+                    seeYa();
+                } else {
+                    expectedOutput();
+                }
+            }  else {
+                System.out.println(dayPromptNonLeap);
+                myDay = KEYBOARD.nextInt();
+                if (myDay < 1 || myDay > 28) {
+                    seeYa();
+                } else {
+                    expectedOutput();
+                }
             }
         }
 

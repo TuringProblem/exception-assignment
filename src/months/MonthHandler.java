@@ -14,8 +14,8 @@ public class MonthHandler {
     };
     public void sendJanuary()throws DayException {
         userInput = thirtyOneDays.get();
-        if (thirtyOneDays(userInput)) {
-
+        if (!thirtyOneDays(userInput)) {
+            System.out.printf("%s %d%s\n",MonthValidator.MyMonths.JAN.getName(), userInput, FEB.dateCases(userInput) );
         } else {
             System.out.printf("%s %d%s\n",MonthValidator.MyMonths.JAN.getName(), userInput, FEB.dateCases(userInput) );
         }
