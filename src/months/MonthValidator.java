@@ -1,18 +1,17 @@
 package src.months;
 import exception.DayException;
 import exception.MonthException;
-
-import java.time.chrono.MinguoChronology;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.Scanner;
+
 /**
  * @author Override
  * @since 3/20/2024 @19:32
  * @see <a href="https://github.com/TuringProblem">GitHub Profile</a>
  */
+
 public class MonthValidator {
 
     private String userInput;
@@ -116,16 +115,26 @@ public class MonthValidator {
             case "March" -> MONTH.sendResultThirtyOne(3);
             case "April" -> MONTH.sendResultThirty(4);
             case "May" -> MONTH.sendResultThirtyOne(5);
-            case "June" -> MONTH.sendResultThirtyOne(6);
+            case "June" -> MONTH.sendResultThirty(6);
             case "July" -> MONTH.sendResultThirtyOne(7);
             case "August" -> MONTH.sendResultThirtyOne(8);
-            case "September" -> MONTH.sendResultThirtyOne(9);
+            case "September" -> MONTH.sendResultThirty(9);
             case "October" -> MONTH.sendResultThirtyOne(10);
             case "November" -> MONTH.sendResultThirty(11);
             case "December" -> MONTH.sendResultThirtyOne(12);
         }
     }
-
-
-
+    /**
+     * @param userInput -> takes the input from the user
+     * @return -> The corresponding value for the integerakajsdlkfj
+     */
+    public String dateCases(int userInput) {
+        return switch (userInput) {
+            case 1, 21, 31 -> "st";
+            case 2, 22 -> "nd";
+            case 3, 23 -> "rd";
+            case 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24, 25, 26, 27, 28, 29, 30 -> "th";
+            default -> "";
+        };
+    }
 }

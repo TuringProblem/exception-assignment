@@ -26,6 +26,11 @@ public class MonthHandler {
     public void setUserInput() {userInput = thirtyOneDays.get();}
     public void setUserInputThirty() {userInput = thirtyDays.get();}
 
+    /**
+     * @param month ->
+     * @throws DayException
+     */
+
     public void sendResultThirtyOne(int month)throws DayException {
         setUserInput();
         try{
@@ -54,8 +59,12 @@ public class MonthHandler {
         }
     }
 
+    /**
+     * @param value -> gives the user one last chance
+     */
+
     public void secondChanceThirtyDays(int value) {
-        userInput = thirtyOneDays.get();
+        userInput = thirtyDays.get();
         if (!thirtyDays(userInput)) {
             printOutput(value);
         } else {
