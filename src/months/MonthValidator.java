@@ -2,7 +2,6 @@ package src.months;
 import exception.DayException;
 import exception.MonthException;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.Scanner;
 
@@ -14,10 +13,8 @@ import java.util.Scanner;
 
 public class MonthValidator {
 
-    private String userInput;
-
     /**
-     * @see Map -> Using enum to set day values, and Name values of the month, and days
+     * @see Map -> Using enum to set day values, and Name values of the month, and days due to them being constant values
      */
 
     public enum MyMonths {
@@ -35,34 +32,42 @@ public class MonthValidator {
         DEC("December", 31);
 
         private final String name;
-        private final int days;
-        MyMonths(String name, int days) {
+        private final Integer day;
+        MyMonths(String name, Integer day) {
             this.name = name;
-            this.days = days;
+            this.day = day;
         }
         public String getName() { return name; }
-        public int getDays() { return days; }
+        public int getDay() { return day; }
     }
 
-    public String caseHandler(int value) {
+    /**
+     * @param value -> The int value passed from the user
+     * @return -> return the corresponding enum for the int value
+     */
+    public MyMonths caseHandler(int value) {
         return switch (value) {
-            case 1 -> MyMonths.JAN.getName();
-            case 2 -> MyMonths.FEB.getName();
-            case 3 -> MyMonths.MAR.getName();
-            case 4 -> MyMonths.APR.getName();
-            case 5 -> MyMonths.MAY.getName();
-            case 6 -> MyMonths.JUN.getName();
-            case 7 -> MyMonths.JUL.getName();
-            case 8 -> MyMonths.AUG.getName();
-            case 9 -> MyMonths.SEP.getName();
-            case 10 -> MyMonths.OCT.getName();
-            case 11 -> MyMonths.NOV.getName();
-            case 12 -> MyMonths.DEC.getName();
-            default -> "";
+            case 1 -> MyMonths.JAN;
+            case 2 -> MyMonths.FEB;
+            case 3 -> MyMonths.MAR;
+            case 4 -> MyMonths.APR;
+            case 5 -> MyMonths.MAY;
+            case 6 -> MyMonths.JUN;
+            case 7 -> MyMonths.JUL;
+            case 8 -> MyMonths.AUG;
+            case 9 -> MyMonths.SEP;
+            case 10 -> MyMonths.OCT;
+            case 11 -> MyMonths.NOV;
+            case 12 -> MyMonths.DEC;
+            default -> null;
         };
     }
 
-    public Supplier<String> monthSupplier = () -> {
+    /**
+     * MonthSupplier deals with the value being passed and converts the int to the corresponding value
+     */
+
+    public Supplier<MyMonths> monthSupplier = () -> {
         Scanner KEYBOARD = new Scanner(System.in);
         System.out.println("MONTHS [1 = January] [2 = February] , etc... \nEnter a month [1-12]: ");
         int value = KEYBOARD.nextInt();
@@ -71,24 +76,27 @@ public class MonthValidator {
 
     /**
      * @see FebruaryHandler -> Handles the month of February
-     */
+     * @see MonthHandler -> Handles the remaining months
+     * */
 
     public static FebruaryHandler FEB = new FebruaryHandler();
     public static MonthHandler MONTH = new MonthHandler();
 
     /**
-     * @see Predicate -> Checks if the year passed by the user is a Leap year
+     * checkMonth() -> Makes sure that the month being passed is valid
+     * @exception MonthException -> If the month passed is invalid, then the users gets one more chance
+     * @exception DayException -> If the day passed is invalid, then the user gets one more chance
      */
 
-    public final Predicate<Integer> leapYearPredicate = i -> i % 4 == 0 && (i % 100 != 0 || i % 400 == 0);
-
     public void checkMonth() throws MonthException,  DayException {
-        userInput = monthSupplier.get();
+       MyMonths userInput = monthSupplier.get();
         try {
-            if (userInput.isEmpty()) {
+            if (userInput == null) {
                 throw new MonthException("You cannot use that value!\n");
+            } else  if (userInput == MyMonths.FEB) {
+                FEB.februaryHandler(userInput);
             } else {
-                remainingMonths(userInput);
+                MONTH.sendResult(userInput);
             }
 
         } catch (MonthException e) {
@@ -98,43 +106,34 @@ public class MonthValidator {
         }
     }
 
+    /**
+     *
+     * @throws MonthException -> If the user does not input the right value, then the program will end
+     * @throws DayException -> If the user does not input the right value, then the program will end
+     * lastMonthChance() -> Gives the user one last chance to add the correct value
+     */
+
     public void lastMonthChance() throws MonthException, DayException {
-        userInput = monthSupplier.get();
-        if (userInput.isEmpty()) {
+        MyMonths userInput = monthSupplier.get();
+        if (userInput == null) {
             System.out.println("you have still been unable to give a valid month\n Good bye! :)");
             System.exit(0);
         } else {
-            remainingMonths(userInput);
+            MONTH.sendResult(userInput);
         }
     }
 
-    public void remainingMonths(String input) throws DayException {
-        switch (input) {
-            case "January" -> MONTH.sendResultThirtyOne(1);
-            case "February" -> FEB.februaryHandler(2);
-            case "March" -> MONTH.sendResultThirtyOne(3);
-            case "April" -> MONTH.sendResultThirty(4);
-            case "May" -> MONTH.sendResultThirtyOne(5);
-            case "June" -> MONTH.sendResultThirty(6);
-            case "July" -> MONTH.sendResultThirtyOne(7);
-            case "August" -> MONTH.sendResultThirtyOne(8);
-            case "September" -> MONTH.sendResultThirty(9);
-            case "October" -> MONTH.sendResultThirtyOne(10);
-            case "November" -> MONTH.sendResultThirty(11);
-            case "December" -> MONTH.sendResultThirtyOne(12);
-        }
-    }
     /**
      * @param userInput -> takes the input from the user
-     * @return -> The corresponding value for the integerakajsdlkfj
+     * @return -> The corresponding value for the users input
      */
     public String dateCases(int userInput) {
+        if(userInput > 31 || userInput < 1) return "";
         return switch (userInput) {
             case 1, 21, 31 -> "st";
             case 2, 22 -> "nd";
             case 3, 23 -> "rd";
-            case 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 24, 25, 26, 27, 28, 29, 30 -> "th";
-            default -> "";
+            default -> "th";
         };
     }
 }

@@ -1,6 +1,7 @@
 package src.months;
 import exception.DayException;
 import java.util.Scanner;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
@@ -10,22 +11,23 @@ import java.util.function.Supplier;
  */
 
 public class FebruaryHandler {
-    MonthValidator month = new MonthValidator();
-
     /**
-     * Leap day, is private value used
+     * @see MonthHandler -> Grabs the month being passed by the user
+     * myDay -> Day value passed by the user
+     * Predicate<Integer> leapYearPredicate -> Determines if the year passed is leapyear or not
+     * Supplier<Integer> yearSupplier -> Gets the year value from the user
      */
-
+    MonthHandler MONTH = new MonthHandler();
     private int myDay;
     public final String dayPromptNonLeap = "Enter day for February\n EX: [1-28]: ";
     public final String dayPromptLeapYear = "Enter day for leap year\n EX: [1-29]: ";
     public String dayExceptionPrompt = "Invalid Day for February!\n";
     public Scanner KEYBOARD = new Scanner(System.in);
-
-    public void expectedOutput(int valuePassed) {
-        System.out.printf("%s %d%s\n", month.caseHandler(valuePassed), myDay, month.dateCases(myDay));
-    }
-
+    /**
+     * Predicate -> Takes in a value, and returns a boolean result
+     * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html">java.util.function</a>
+     */
+    public final Predicate<Integer> leapYearPredicate = i -> i % 4 == 0 && (i % 100 != 0 || i % 400 == 0);
     public Supplier<Integer> yearSupplier = () -> {
         try {
             System.out.println("Please enter the year: ");
@@ -41,24 +43,27 @@ public class FebruaryHandler {
             throw new RuntimeException(e);
         }
     };
+    public boolean isALeapYear() { return leapYearPredicate.test(yearSupplier.get());}//Runs the leap year predicate, returns true if leap year, and false if not
 
     /**
-     * This is the last resort for the user to implement the right value
+     * februaryHandler() -> Deals with the output of the month
+     * @exception DayException -> If the day is not valid:
+     * The user gets one last chance with lastChanceDay();
      */
 
-    public void februaryHandler(int monthValue) {
-        if (month.leapYearPredicate.test(yearSupplier.get())) {
+    public void februaryHandler(MonthValidator.MyMonths monthValue) throws DayException {
+        if (isALeapYear()){
             try {
                 System.out.println(dayPromptLeapYear);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 29) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
-                    expectedOutput(monthValue);
+                    MONTH.printOutput(monthValue, myDay);
                 }
             } catch (DayException e) {
                 System.out.println(e.getMessage());
-                finalDay(true);
+                lastChanceDay(true);
             }
         } else {
             try {
@@ -66,31 +71,33 @@ public class FebruaryHandler {
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 28) {
                     throw new DayException(dayExceptionPrompt);
+                } else {
+                    System.out.println(dayPromptNonLeap);
+                    MONTH.printOutput(monthValue, myDay);
                 }
             } catch (DayException exception) {
                 System.out.println(exception.getMessage());
-                finalDay(false);
+                lastChanceDay(false);
             }
-            System.out.println(dayPromptNonLeap);
-            expectedOutput(monthValue);
         }
     }
 
-    public void finalDay(boolean leapOrNot) {
+   public void lastChanceDay(boolean leapOrNot) {
         try {
+            MonthValidator.MyMonths monthValue = MonthValidator.MyMonths.FEB;
             if (leapOrNot) {
                 System.out.println(dayPromptLeapYear);
                 myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 29) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
-                    expectedOutput(2);
+                    MONTH.printOutput(monthValue, myDay);
                 }
             } else {
                 if (myDay < 1 || myDay > 28) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
-                    expectedOutput(2);
+                    MONTH.printOutput(monthValue, myDay);
                 }
             }
         } catch (DayException e) {
@@ -99,12 +106,8 @@ public class FebruaryHandler {
         }
 
     }
-
     public void seeYa() {
         System.out.println("I've tried to warn you...\ngood bye :)");
         System.exit(0);
     }
-
-
-
 }

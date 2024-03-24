@@ -1,88 +1,48 @@
 package src.months;
 import exception.DayException;
+import exception.MonthException;
 import java.util.Scanner;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
+/**
+ * @author Override
+ * @since 03/23/24 @17:56
+ * @see <a href="https://Github.com/TuringProblem">GitHub Profile</a>
+ */
 public class MonthHandler {
-    private int userInput;
-    Scanner KEYBOARD = new Scanner(System.in);
-    FebruaryHandler FEB = new FebruaryHandler();
     MonthValidator MONTH = new MonthValidator();
-    final String dayExceptionOutput = "Invalid output!\n";
+    Scanner KEYBOARD = new Scanner(System.in);
+    public void printOutput(MonthValidator.MyMonths monthPassed, int days) { System.out.printf("%s %d%s\n", monthPassed.getName(), days, MONTH.dateCases(days)); }
 
-    Supplier<Integer> thirtyOneDays = () -> {
-        System.out.println("Please enter a day 1-31: ");
+    /**
+     * Java Function -> Takes in a parameter and returns a value back.
+     * @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html">java.util.function</a> for Java documentation
+     */
+    Function<Integer, Integer> getUserInput = (output) -> {
+        System.out.printf("Input a number between [1-%d]: ", output);
         return KEYBOARD.nextInt();
     };
 
-    Supplier<Integer> thirtyDays = () -> {
-        System.out.println("Please enter a day [1-30]: ");
-        return KEYBOARD.nextInt();
-    };
-
     /**
-     * @throws DayException -> Checks to make sure the user uses the correct inputs.
-     */
-    public void setUserInput() {userInput = thirtyOneDays.get();}
-    public void setUserInputThirty() {userInput = thirtyDays.get();}
-
-    /**
-     * @param month ->
-     * @throws DayException
+     * @param months -> Grabs the enum month type:
+     * @see MonthValidator -> for enum
+     * @throws DayException -> Checks to make sure the users inputs for the day is correct:
+     * if not the exception is thrown and the user is prompted one last chance.
+     * @throws MonthException -> Checks to make sure the user inputs the correct Month value:
+     *  if not the exception is thrown and the user is prompted one last chance.
      */
 
-    public void sendResultThirtyOne(int month)throws DayException {
-        setUserInput();
-        try{
-            if (!thirtyoneDays(userInput)) {
-                printOutput(month);
+    public void sendResult(MonthValidator.MyMonths months) throws DayException, MonthException {
+        int userInput = getUserInput.apply(months.getDay());
+        try {
+            if (userInput > 1 || userInput < months.getDay()) {
+                printOutput(months, userInput);
             } else {
-                throw new DayException(dayExceptionOutput);
+                throw new DayException("Invalid output!\n");
             }
-        } catch (DayException e ) {
+        } catch(DayException e) {
             System.out.println(e.getMessage());
-            secondChanceThirtyOneDays(month);
+           MONTH.lastMonthChance();
         }
     }
-
-    public void sendResultThirty(int month)throws DayException {
-        setUserInputThirty();
-        try{
-            if (!thirtyDays(userInput)) {
-                printOutput(month);
-            } else {
-                throw new DayException(dayExceptionOutput);
-            }
-        } catch (DayException e ) {
-            System.out.println(e.getMessage());
-            secondChanceThirtyDays(month);
-        }
-    }
-
-    /**
-     * @param value -> gives the user one last chance
-     */
-
-    public void secondChanceThirtyDays(int value) {
-        userInput = thirtyDays.get();
-        if (!thirtyDays(userInput)) {
-            printOutput(value);
-        } else {
-            System.out.println("I've tried to warn you...\n goodbye for now!\n");
-            System.exit(0);
-        }
-    }
-
-    public void secondChanceThirtyOneDays(int value) {
-        userInput = thirtyOneDays.get();
-        if (!thirtyoneDays(userInput)) {
-            printOutput(value);
-        } else {
-            System.out.println("I've tried to warn you...\n goodbye for now!\n");
-            System.exit(0);
-        }
-    }
-    public void printOutput(int monthPassed) { System.out.printf("%s %d%s\n", MONTH.caseHandler(monthPassed), userInput, FEB.dateCases(userInput)); }
-    public boolean thirtyDays(int userInput) { return  userInput < 1 || userInput > 30; }
-    public boolean thirtyoneDays(int userInput) { return userInput < 1 || userInput > 31; }
 }
