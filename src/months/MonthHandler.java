@@ -35,14 +35,34 @@ public class MonthHandler {
     public void sendResult(MonthValidator.MyMonths months) throws DayException, MonthException {
         int userInput = getUserInput.apply(months.getDay());
         try {
-            if (userInput > 1 || userInput < months.getDay()) {
-                printOutput(months, userInput);
+            if (userInput < 1 || userInput > months.getDay()) {
+                throw new DayException("Invalid output:\nThe month of " + months + " has 1-" + months.getDay() + " days\n");
             } else {
-                throw new DayException("Invalid output!\n");
+                printOutput(months, userInput);
             }
         } catch(DayException e) {
             System.out.println(e.getMessage());
-           MONTH.lastMonthChance();
+           secondChanceDay(months);
+        }
+    }
+
+    /**
+     * secondChanceDay() -> Last chance for the user to input the correct day for the month passed
+     * @param months -> Month passed by the user
+     * @throws DayException -> Exception is thrown when the user does not input the correct value
+     */
+
+    public void secondChanceDay(MonthValidator.MyMonths months) throws DayException {
+        int userInput = getUserInput.apply(months.getDay());
+        try {
+            if (userInput < 1 || userInput > months.getDay()) {
+                throw  new DayException("Invalid output:\nThe program will now close");
+            } else {
+                printOutput(months, userInput);
+            }
+        } catch (DayException e) {
+            System.out.println(e.getMessage());
+            System.exit(0);
         }
     }
 }

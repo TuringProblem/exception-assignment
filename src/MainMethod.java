@@ -8,7 +8,6 @@ public class MainMethod {
         MonthValidator myMonth = new MonthValidator();
         myMonth.checkMonth();
     }
-
 }
 
 

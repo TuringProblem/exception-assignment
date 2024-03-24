@@ -82,7 +82,12 @@ public class FebruaryHandler {
         }
     }
 
-   public void lastChanceDay(boolean leapOrNot) {
+    /**
+     * lastChanceDay() -> Checks the users input: if the user inputs incorrectly then the program will close
+     * @param leapOrNot -> Checks if the year that was passed was a leap year or not
+     */
+
+   public void lastChanceDay(boolean leapOrNot)throws DayException {
         try {
             MonthValidator.MyMonths monthValue = MonthValidator.MyMonths.FEB;
             if (leapOrNot) {
@@ -94,6 +99,8 @@ public class FebruaryHandler {
                     MONTH.printOutput(monthValue, myDay);
                 }
             } else {
+                System.out.println(dayPromptNonLeap);
+                myDay = KEYBOARD.nextInt();
                 if (myDay < 1 || myDay > 28) {
                     throw new DayException(dayExceptionPrompt);
                 } else {
@@ -106,8 +113,13 @@ public class FebruaryHandler {
         }
 
     }
+
+    /**
+     * Output for kicking the user off
+     */
+
     public void seeYa() {
-        System.out.println("I've tried to warn you...\ngood bye :)");
+        System.out.println("I've tried to warn you...\nThis program will now close.\n");
         System.exit(0);
     }
 }

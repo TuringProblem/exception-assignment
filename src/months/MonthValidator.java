@@ -37,8 +37,8 @@ public class MonthValidator {
             this.name = name;
             this.day = day;
         }
-        public String getName() { return name; }
-        public int getDay() { return day; }
+        public String getName() { return name; }//gets the enum name
+        public int getDay() { return day; }//gets the enum day
     }
 
     /**
@@ -118,6 +118,8 @@ public class MonthValidator {
         if (userInput == null) {
             System.out.println("you have still been unable to give a valid month\n Good bye! :)");
             System.exit(0);
+        } else if (userInput == MyMonths.FEB) {
+            FEB.februaryHandler(userInput);
         } else {
             MONTH.sendResult(userInput);
         }
