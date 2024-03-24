@@ -9,5 +9,3 @@ public class MainMethod {
         myMonth.checkMonth();
     }
 }
-
-
